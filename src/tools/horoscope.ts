@@ -46,11 +46,14 @@ export function registerHoroscopeTool(server: McpServer) {
       const data = await fetchHoroscope(type, time);
       
       if (!data.success) {
+        const errorMsg = ('_error' in data)
+          ? `获取星座运势数据失败: ${data._error}`
+          : "无法获取星座运势数据，请稍后重试或检查网络连接";
         return {
           content: [
             {
               type: "text",
-              text: "无法获取星座运势数据"
+              text: errorMsg
             }
           ]
         };
