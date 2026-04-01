@@ -16,11 +16,14 @@ export function registerDailyEnglishSentenceTool(server: McpServer) {
       const data = await fetchDailyEnglish(random);
       
       if (!data.success) {
+        const errorMsg = ('_error' in data)
+          ? `获取每日英语句子失败: ${data._error}`
+          : "无法获取每日英语句子数据，请稍后重试或检查网络连接";
         return {
           content: [
             {
               type: "text",
-              text: "无法获取每日英语句子数据"
+              text: errorMsg
             }
           ]
         };
