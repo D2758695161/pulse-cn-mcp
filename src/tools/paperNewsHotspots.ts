@@ -12,12 +12,15 @@ export function registerPaperNewsHotspotsTool(server: McpServer) {
     async (params: PaperNewsParams) => {
       const data = await fetchPaperNews();
       
-      if (!data.success || !data.data) {
+      if (!data.success || !data.data || data.data.length === 0) {
+        const errorMsg = ('_error' in data)
+          ? `获取澎湃新闻热点数据失败: ${data._error}`
+          : "无法获取澎湃新闻热点数据，请稍后重试或检查网络连接";
         return {
           content: [
             {
               type: "text",
-              text: "无法获取澎湃新闻热点数据"
+              text: errorMsg
             }
           ]
         };
